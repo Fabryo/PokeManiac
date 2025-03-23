@@ -72,10 +72,10 @@ class SearchFriendViewModel(
         }
     }
 
-    fun subscribeCharacter(friendId: String) = updateCharacterSubription(friendId = friendId, subscribe = true)
-    fun unsubscribeCharacter(friendId: String) = updateCharacterSubription(friendId = friendId, subscribe = false)
+    fun subscribeFriend(friendId: String) = updateFriendSubription(friendId = friendId, subscribe = true)
+    fun unsubscribeFriend(friendId: String) = updateFriendSubription(friendId = friendId, subscribe = false)
 
-    private fun updateCharacterSubription(friendId: String, subscribe: Boolean) {
+    private fun updateFriendSubription(friendId: String, subscribe: Boolean) {
         (_uiState.value as? Data)?.let { data ->
             launchStoreCall(
                 onLoading = {

@@ -130,8 +130,8 @@ fun SearchFriendView(
                 is Data -> PeopleData(
                     Modifier.padding(top = PokeManiacTheme.dimens.small),
                     state.people,
-                    viewModel::subscribeCharacter,
-                    viewModel::unsubscribeCharacter
+                    viewModel::subscribeFriend,
+                    viewModel::unsubscribeFriend
                 )
 
                 Loading -> {
@@ -305,7 +305,6 @@ fun DebouncedSearchTextField(
     }
 }
 
-// TODO Fabrice
 //@Preview(showBackground = true)
 //@Composable
 //fun CharacterListCharactersPreview() {
