@@ -42,6 +42,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -241,5 +242,57 @@ fun FriendCard(
                 text = stringResource(R.string.unsubscribe)
             ) { onUnsubscribeFriend(friend.id) }
         }
+    }
+}
+
+@Preview
+@Composable
+fun FriendCardPreview() {
+    PokeManiacTheme {
+        FriendCard(
+            friend = MyFriendUI(
+                id = "friendId",
+                name = "friendName",
+                imageUrl = "https://www.superherodb.com/pictures2/portraits/10/100/10831.jpg",
+                description = "description",
+                pokemonCards = listOf()
+            ),
+            onFriendClicked = {},
+            onUnsubscribeFriend = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun MyFriendsListContentPreview() {
+    PokeManiacTheme {
+        MyFriendsListContent(
+            friends = listOf(
+                MyFriendUI(
+                    id = "friendId",
+                    name = "friendName",
+                    imageUrl = "https://www.superherodb.com/pictures2/portraits/10/100/10831.jpg",
+                    description = "description",
+                    pokemonCards = listOf()
+                ),
+                MyFriendUI(
+                    id = "friendId1",
+                    name = "friendName1",
+                    imageUrl = "https://www.superherodb.com/pictures2/portraits/10/100/891.jpg",
+                    description = "description",
+                    pokemonCards = listOf()
+                ),
+                MyFriendUI(
+                    id = "friendId",
+                    name = "friendName",
+                    imageUrl = "https://www.superherodb.com/pictures2/portraits/10/100/1345.jpg",
+                    description = "description",
+                    pokemonCards = listOf()
+                )
+            ),
+            onFriendClicked = { },
+            onUnsubscribeFriend = { }
+        )
     }
 }
