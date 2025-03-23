@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">PokeManiac</string>
+    <string name="title_searchfriend">SearchFriend</string>
+    <string name="title_myfriends">My Friends</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_add">My Profile</string>
+    <string name="title_myprofile">My Profile</string>
+</resources>

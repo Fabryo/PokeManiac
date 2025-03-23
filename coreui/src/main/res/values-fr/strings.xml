@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PokeManiac</string>
+
+    <string name="default_username">Super Dresseur</string>
+
+    <string name="welcome">Bienvenue !</string>
+    <string name="signin">Se connecter</string>
+    <string name="signup">S\'inscrire</string>
+
+    <string name="next">Suivant</string>
+    <string name="loading">Chargement…</string>
+    <string name="subscribe">S\'abonner</string>
+    <string name="unsubscribe">Se désabonner</string>
+    <string name="search_friends">Trouve tes amis</string>
+    <string name="search_friends_description">Tape le nom de tes amis !</string>
+    <string name="search_friends_no_result">Désolé, pas de résultat pour "%s"</string>
+    <string name="go_to_newsfeed">Découvre les nouveautés !</string>
+
+    <string name="dashboard_title">Accueil</string>
+
+    <string name="activity_purchase">Acquisition d\'une super carte de %s pour le prix de %s€ !</string>
+    <string name="activity_sale">Revente d\'une super carte de %s pour le prix de %s€ !</string>
+
+    <string name="my_friends_title">Tous mes amis</string>
+    <string name="no_friends_yet">Tu n\'as pas encore ajouté tes amis !</string>
+    <string name="my_friend_detail_total_votes">%s votes en tout !</string>
+    <string name="my_friend_detail_total_votes_none">Personne n\'a encore envoyé de vote !</string>
+    <string name="my_friend_detail_no_activity_yet">%s n\'a encore rien posté…!</string>
+
+    <string name="new_post_title">Nouvelle transaction</string>
+    <string name="new_post_step_1_title">1. Prends en photo la carte</string>
+    <string name="new_post_step_1_take_photo">Prends une photo</string>
+    <string name="new_post_step_1_retake_photo">Change de photo</string>
+    <string name="camera_permission_denied">Permission caméra refusée</string>
+    <string name="new_post_step_2_title">2. Décris ce bon plan</string>
+    <string name="new_post_step_2_pokemon_number">Numero du Pokemon</string>
+    <string name="new_post_step_2_pokemon_number_placeholder">150</string>
+    <string name="new_post_step_2_pokemon_name">Nom du Pokemon</string>
+    <string name="new_post_step_2_pokemon_name_placeholder">Pikachu</string>
+    <string name="new_post_step_2_price">Prix de la transaction (€)</string>
+    <string name="new_post_step_2_price_placeholder">4 477 146</string>
+    <string name="new_post_step_2_transaction_type">Type de transaction</string>
+    <string name="new_post_step_2_transaction_type_purchase">Achat</string>
+    <string name="new_post_step_2_transaction_type_sale">Vente</string>
+
+    <string name="my_profile_total_votes">%s votes en tout !</string>
+    <string name="my_profile_total_votes_none">Tu n\'as pas encore reçu de votes…\nNe désespère pas, ajoute des amis et montre leur tes derniers bon plans !</string>
+    <string name="my_profile_no_activity_yet">Tu n\'as pas encore rien posté.\nMontre vite à tes amis tes dernières bon plans !</string>
+
+
+
+</resources>
