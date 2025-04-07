@@ -1,16 +1,14 @@
 package com.shodo.android.domain.repositories.friends
 
 import com.shodo.android.domain.repositories.entities.User
+import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
-    suspend fun getSubscribedUsers(): List<User>
-    suspend fun getSubscribedUser(userId: String): User?
+    fun getSubscribedUsers(): Flow<List<User>>
+    fun getSubscribedUser(userId: String): Flow<User?>
 
-    suspend fun searchUser(userName: String): List<User>
+    suspend fun searchUsers(userName: String): Flow<List<User>>
 
-    suspend fun subscribeUser(user: User): User
-    suspend fun unsubscribeUser(userId: String): User
-
-    suspend fun upvotePokemonCard(userId: String, cardId: Int): User
-    suspend fun downvotePokemonCard(userId: String, cardId: Int): User
+    suspend fun subscribeUser(user: User)
+    suspend fun unsubscribeUser(userId: String)
 }

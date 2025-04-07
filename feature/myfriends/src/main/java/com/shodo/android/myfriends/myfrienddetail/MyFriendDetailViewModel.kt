@@ -1,12 +1,10 @@
 package com.shodo.android.myfriends.myfrienddetail
 
 import androidx.lifecycle.ViewModel
-import com.shodo.android.coreui.viewmodel.launchStoreCall
-import com.shodo.android.domain.repositories.entities.User
-import com.shodo.android.domain.usecases.UseCase
+import androidx.lifecycle.viewModelScope
+import com.shodo.android.domain.repositories.friends.UserRepository
 import com.shodo.android.myfriends.myfrienddetail.MyFriendDetailUiState.Data
 import com.shodo.android.myfriends.myfrienddetail.MyFriendDetailUiState.Loading
-import com.shodo.android.myfriends.myfriendlist.MyFriendListUiState
 import com.shodo.android.myfriends.uimodel.MyFriendUI
 import com.shodo.android.myfriends.uimodel.mapToUI
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 sealed class MyFriendDetailUiState {
     data class Data(val friend: MyFriendUI) : MyFriendDetailUiState()
@@ -22,8 +21,7 @@ sealed class MyFriendDetailUiState {
 }
 
 class MyFriendDetailViewModel(
-    private val getUserUseCase: UseCase<String, User>,
-    private val unsubscribeFriend: UseCase<String, User>
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     private val _error = MutableSharedFlow<Exception>()
@@ -36,21 +34,27 @@ class MyFriendDetailViewModel(
     val uiState: StateFlow<MyFriendDetailUiState> = _uiState.asStateFlow()
 
     fun start(id: String) {
-        launchStoreCall(
-            onLoading = { _uiState.update { Loading } },
-            load = { _uiState.update { Data(getUserUseCase.defer(id).mapToUI()) } },
-            onError = { _error.emit(it) }
-        )
+        viewModelScope.launch {
+            _uiState.update { Loading }
+            try {
+                userRepository.getSubscribedUser(id).collect { user ->
+                    user?.let {
+                        _uiState.update { Data(user.mapToUI()) }
+                    } ?: _unsubscribed.emit(true)
+                }
+            } catch (e: Exception) {
+                _error.emit(e)
+            }
+        }
     }
 
     fun unsubscribeFriend(friendId: String) {
-        launchStoreCall(
-            onLoading = { _uiState.update { Loading } },
-            load = {
-                unsubscribeFriend.defer(friendId)
-                _unsubscribed.emit(true)
-            },
-            onError = { _error.emit(it) }
-        )
+        viewModelScope.launch {
+            try {
+                userRepository.unsubscribeUser(friendId)
+            } catch (e: Exception) {
+                _error.emit(e)
+            }
+        }
     }
 }

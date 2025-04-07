@@ -1,7 +1,7 @@
 package com.shodo.android.dashboard
 
 import androidx.lifecycle.ViewModel
-import com.shodo.android.coreui.viewmodel.launchStoreCall
+import androidx.lifecycle.viewModelScope
 import com.shodo.android.dashboard.DashboardUiState.EmptyResult
 import com.shodo.android.dashboard.DashboardUiState.Loading
 import com.shodo.android.dashboard.uimodel.ImageSourceUI
@@ -11,8 +11,7 @@ import com.shodo.android.dashboard.uimodel.PokemonCardUI
 import com.shodo.android.domain.repositories.entities.ImageSource
 import com.shodo.android.domain.repositories.entities.NewActivity
 import com.shodo.android.domain.repositories.entities.NewActivityType
-import com.shodo.android.domain.usecases.UseCase
-import com.shodo.android.domain.usecases.UseCase.Companion.await
+import com.shodo.android.domain.repositories.news.NewsFeedRepository
 import java.time.format.DateTimeFormatter
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -21,7 +20,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-
+import kotlinx.coroutines.launch
 
 sealed class DashboardUiState {
     data class Data(val news: List<NewActivityUI>) : DashboardUiState()
@@ -30,7 +29,7 @@ sealed class DashboardUiState {
 }
 
 class DashboardViewModel(
-    private val getNews: UseCase<Nothing?, List<NewActivity>>
+    private val newsFeedRepository: NewsFeedRepository
 ) : ViewModel() {
 
     private val _error = MutableSharedFlow<Exception>()
@@ -40,34 +39,32 @@ class DashboardViewModel(
     val uiState: StateFlow<DashboardUiState> = _uiState.asStateFlow()
 
     fun start() {
-        launchStoreCall(
-            onLoading = { _uiState.update { Loading } },
-            load = {
-                val result = getNews.await()
-                if (result.isNotEmpty()) {
-                    _uiState.update { DashboardUiState.Data(getNews.await().map { it.mapToUI() }) }
-                } else {
-                    _uiState.update { EmptyResult }
-                }
-            },
-            onError = { _error.emit(it) }
-        )
+        viewModelScope.launch {
+            _uiState.update { Loading }
+            fetchNewActivities()
+        }
     }
 
     fun refreshNewsFeed() {
-        launchStoreCall(
-            onLoading = { _uiState.update { Loading } },
-            load = {
+        viewModelScope.launch {
+            _uiState.update { Loading }
+            try {
                 delay(2000) // Mock Delay to show the loading state
-                val result = getNews.await()
-                if (result.isNotEmpty()) {
-                    _uiState.update { DashboardUiState.Data(getNews.await().map { it.mapToUI() }) }
-                } else {
-                    _uiState.update { EmptyResult }
-                }
-            },
-            onError = { _error.emit(it) }
-        )
+                fetchNewActivities()
+            } catch (e: Exception) {
+                _error.emit(e)
+            }
+        }
+    }
+
+    private suspend fun fetchNewActivities() {
+        newsFeedRepository.getNewActivities().collect { result ->
+            if (result.isNotEmpty()) {
+                _uiState.update { DashboardUiState.Data(result.map { it.mapToUI() }) }
+            } else {
+                _uiState.update { EmptyResult }
+            }
+        }
     }
 }
 

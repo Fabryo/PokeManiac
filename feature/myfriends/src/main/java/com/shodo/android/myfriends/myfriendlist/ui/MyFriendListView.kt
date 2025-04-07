@@ -43,7 +43,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.Lifecycle.Event.ON_RESUME
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -80,7 +80,7 @@ fun MyFriendListView(
 
     DisposableEffect(lifecycleOwner) {
         val lifecycleObserver = LifecycleEventObserver { _, event ->
-            if (event == ON_RESUME) {
+            if (event == Lifecycle.Event.ON_START) {
                 viewModel.fetchMyFriends()
             }
         }
@@ -133,8 +133,8 @@ fun MyFriendListView(
         Column(
             modifier = modifier
                 .fillMaxSize()
+                .background(color = PokeManiacTheme.colors.backgroundApp)
                 .padding(innerPadding)
-                .background(color = PokeManiacTheme.colors.backgroundApp),
         ) {
             Box(
                 modifier = Modifier

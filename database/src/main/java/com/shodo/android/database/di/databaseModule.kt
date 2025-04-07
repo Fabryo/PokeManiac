@@ -12,7 +12,6 @@ import com.shodo.android.database.myactivities.MyActivitiesDataStoreImpl
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
-
 val databaseModule = module {
 
     fun provideDataBase(application: Application): PokeManiacDatabase {

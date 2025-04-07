@@ -1,11 +1,10 @@
-package com.shodo.android.domain.usecases
-
-import com.shodo.android.domain.repositories.friends.UserRepository
-import com.shodo.android.domain.repositories.entities.User
-
-class UnsubscribeFriendUseCase(private val userRepository: UserRepository): UseCase<String, User> {
-
-    override suspend fun defer(arg: String): User {
-        return userRepository.unsubscribeUser(arg)
-    }
-}
+//package com.shodo.android.domain.usecases
+//
+//import com.shodo.android.domain.repositories.friends.UserRepository
+//
+//class UnsubscribeFriendUseCase(private val userRepository: UserRepository) {
+//
+//    suspend fun execute(user: String) {
+//        userRepository.unsubscribeUser(user)
+//    }
+//}

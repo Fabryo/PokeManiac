@@ -6,30 +6,30 @@ import com.shodo.android.database.friends.FriendBase.PokemonCardBase
 import com.shodo.android.domain.repositories.entities.ImageSource
 import com.shodo.android.domain.repositories.entities.User
 import com.shodo.android.domain.repositories.entities.UserPokemonCard
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class FriendsDataStoreImpl(private val database: PokeManiacDatabase) : FriendsDataStore {
-    override suspend fun getFriendByName(friendName: String): User? {
-        return database.localFriendsDao().getFriendByName(friendName)?.mapToModel()
-    }
-
-    override suspend fun getFriendById(friendId: String): User? {
-        return database.localFriendsDao().getFriendById(friendId)?.mapToModel()
+    override fun getFriendById(friendId: String): Flow<User?> {
+        return database.localFriendsDao().getFriendById(friendId).map { it?.mapToModel() }
     }
 
     override suspend fun subscribeFriend(user: User) {
         database.localFriendsDao().insert(user.mapToBase())
     }
 
-    override suspend fun unsubscribeFriend(user: User) {
-        database.localFriendsDao().deleteFriend(user.id)
+    override suspend fun unsubscribeFriend(userId: String) {
+        database.localFriendsDao().deleteFriend(userId)
     }
 
     override suspend fun updateFriend(user: User) {
         database.localFriendsDao().insert(user.mapToBase())
     }
 
-    override suspend fun getSubscribedFriends(): List<User> {
-        return database.localFriendsDao().getAllFriends()?.map { it.mapToModel() } ?: emptyList()
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override fun getSubscribedFriends(): Flow<List<User>> {
+        return database.localFriendsDao().getAllFriends().map { friends -> friends.map { it.mapToModel() } }
     }
 }
 

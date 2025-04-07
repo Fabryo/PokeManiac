@@ -65,7 +65,9 @@ import com.shodo.android.searchfriend.SearchFriendUiState.EmptySearch
 import com.shodo.android.searchfriend.SearchFriendUiState.Loading
 import com.shodo.android.searchfriend.SearchFriendViewModel
 import com.shodo.android.searchfriend.uimodel.SearchFriendUI
-import com.shodo.android.searchfriend.uimodel.SubscriptionState
+import com.shodo.android.searchfriend.uimodel.SubscriptionState.NotSubscribed
+import com.shodo.android.searchfriend.uimodel.SubscriptionState.Subscribed
+import com.shodo.android.searchfriend.uimodel.SubscriptionState.UpdatingSubscribe
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
@@ -210,7 +212,7 @@ fun PersonCard(
         colors = CardDefaults.cardColors(containerColor = PokeManiacTheme.colors.backgroundCell),
     ) {
         Column(
-            modifier = Modifier.wrapContentHeight(),
+            modifier = Modifier.wrapContentHeight().fillMaxWidth(),
             horizontalAlignment = CenterHorizontally
         ) {
             AsyncImage(
@@ -239,14 +241,14 @@ fun PersonCard(
             )
 
             when (friend.subscriptionState) {
-                SubscriptionState.Subscribed -> SecondaryButton(
+                Subscribed -> SecondaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = PokeManiacTheme.dimens.small, vertical = PokeManiacTheme.dimens.small),
                     text = stringResource(R.string.unsubscribe)
                 ) { onUnsubscribeFriend(friend.id) }
 
-                SubscriptionState.NotSubscribed -> PrimaryButton(
+                NotSubscribed -> PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = PokeManiacTheme.dimens.small, vertical = PokeManiacTheme.dimens.small),
@@ -254,8 +256,10 @@ fun PersonCard(
                     onClick = { onSubscribeFriend(friend.id) }
                 )
 
-                SubscriptionState.UpdatingSubscribe -> CircularProgressIndicator(
-                    modifier = Modifier.align(CenterHorizontally),
+                UpdatingSubscribe -> CircularProgressIndicator(
+                    modifier = Modifier
+                        .align(CenterHorizontally)
+                        .padding(vertical = PokeManiacTheme.dimens.small),
                     color = PokeManiacTheme.colors.primaryText
                 )
             }

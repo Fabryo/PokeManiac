@@ -3,9 +3,7 @@ package com.shodo.android.database.friends
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
 import java.io.Serializable
-import java.lang.reflect.Type
 
 @Entity(tableName = "friends_table")
 data class FriendBase(

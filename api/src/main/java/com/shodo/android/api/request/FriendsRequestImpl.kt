@@ -6,10 +6,12 @@ import com.shodo.android.data.myfriends.FriendsRequest
 import com.shodo.android.domain.repositories.entities.ImageSource
 import com.shodo.android.domain.repositories.entities.User
 import com.shodo.android.domain.repositories.entities.UserPokemonCard
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class FriendsRequestImpl(private val apiService: SuperHerosApiService) : FriendsRequest {
-    override suspend fun searchFriend(friendName: String): List<User>? {
-        return apiService.searchCharacter(friendName).body()?.results?.map { superheroDTO -> superheroDTO.mapToFriend() }
+    override suspend fun searchUsers(friendName: String): List<User> {
+        return apiService.searchCharacter(friendName).body()?.results?.map { superheroDTO -> superheroDTO.mapToFriend() } ?: emptyList()
     }
 }
 

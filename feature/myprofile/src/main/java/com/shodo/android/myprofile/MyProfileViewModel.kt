@@ -1,12 +1,10 @@
 package com.shodo.android.myprofile
 
 import androidx.lifecycle.ViewModel
-import com.shodo.android.coreui.viewmodel.launchStoreCall
+import androidx.lifecycle.viewModelScope
 import com.shodo.android.domain.repositories.entities.ImageSource
-import com.shodo.android.domain.repositories.entities.NewActivity
 import com.shodo.android.domain.repositories.entities.UserPokemonCard
-import com.shodo.android.domain.usecases.UseCase
-import com.shodo.android.domain.usecases.UseCase.Companion.await
+import com.shodo.android.domain.repositories.myprofile.MyProfileRepository
 import com.shodo.android.myprofile.MyProfileUiState.Loading
 import com.shodo.android.myprofile.uimodel.MyProfilePokemonCardUI
 import com.shodo.android.myprofile.uimodel.MyProfileUI
@@ -15,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 sealed class MyProfileUiState {
     data object Loading: MyProfileUiState()
@@ -22,7 +21,7 @@ sealed class MyProfileUiState {
 }
 
 class MyProfileViewModel(
-    private val getMyActivities: UseCase<Nothing?, List<NewActivity>>
+    private val myProfileRepository: MyProfileRepository
 ): ViewModel() {
 
     private val _uiState: MutableStateFlow<MyProfileUiState> = MutableStateFlow(Loading)
@@ -32,17 +31,23 @@ class MyProfileViewModel(
     val error = _error.asSharedFlow()
 
     fun start() {
-        launchStoreCall(
-            onLoading = { _uiState.update { Loading } },
-            load = {
-                _uiState.update { MyProfileUiState.Data(profile = MyProfileUI(
-                    name = null,
-                    imageUrl = null,
-                    pokemonCards = getMyActivities.await().map { it.pokemonCard.mapToUI() }
-                )) }
-            },
-            onError = { _error.emit(it) }
-        )
+        viewModelScope.launch {
+            _uiState.update { Loading }
+            try {
+                myProfileRepository.getMyActivities().collect { myActivies ->
+                    _uiState.update {
+                        MyProfileUiState.Data(
+                            profile = MyProfileUI(
+                                name = null,
+                                imageUrl = null,
+                                pokemonCards = myActivies.sortedByDescending { it.date }.map { it.pokemonCard.mapToUI() }
+                            ))
+                    }
+                }
+            } catch (e: Exception) {
+                _error.emit(e)
+            }
+        }
     }
 }
 

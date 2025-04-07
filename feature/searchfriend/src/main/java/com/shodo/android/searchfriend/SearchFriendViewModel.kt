@@ -2,13 +2,13 @@ package com.shodo.android.searchfriend
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shodo.android.coreui.viewmodel.launchStoreCall
 import com.shodo.android.domain.repositories.entities.ImageSource
 import com.shodo.android.domain.repositories.entities.User
 import com.shodo.android.domain.repositories.entities.UserPokemonCard
+import com.shodo.android.domain.repositories.friends.UserRepository
 import com.shodo.android.domain.repositories.tracking.TrackingEventClick
 import com.shodo.android.domain.repositories.tracking.TrackingEventScreen
-import com.shodo.android.domain.usecases.UseCase
+import com.shodo.android.domain.repositories.tracking.TrackingRepository
 import com.shodo.android.searchfriend.SearchFriendUiState.Data
 import com.shodo.android.searchfriend.SearchFriendUiState.EmptyResult
 import com.shodo.android.searchfriend.SearchFriendUiState.EmptySearch
@@ -22,22 +22,20 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 sealed class SearchFriendUiState {
-    data object EmptySearch: SearchFriendUiState()
+    data object EmptySearch : SearchFriendUiState()
     data object Loading : SearchFriendUiState()
     data class Data(val people: List<SearchFriendUI>) : SearchFriendUiState()
-    data class EmptyResult(val query: String): SearchFriendUiState()
+    data class EmptyResult(val query: String) : SearchFriendUiState()
 }
 
 class SearchFriendViewModel(
-    private val searchFriend: UseCase<String, List<User>>,
-    private val subscribeFriend: UseCase<User, User>,
-    private val unsubscribeFriend: UseCase<String, User>,
-    private val trackEventScreen: UseCase<TrackingEventScreen, Unit>,
-    private val trackEventClick: UseCase<TrackingEventClick, Unit>
+    private val userRepository: UserRepository,
+    private val trackingRepository: TrackingRepository
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<SearchFriendUiState> = MutableStateFlow(EmptySearch)
@@ -48,67 +46,64 @@ class SearchFriendViewModel(
 
     init {
         viewModelScope.launch {
-            trackEventScreen.defer(TrackingEventScreen(TRACKING_SEARCH_SCREEN))
+            trackingRepository.sendEventScreen(TrackingEventScreen(TRACKING_SEARCH_SCREEN))
         }
     }
 
     fun searchFriend(friendName: String) {
-        if (friendName.isEmpty() || friendName.isBlank()) {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            if (friendName.isEmpty() || friendName.isBlank()) {
                 _uiState.update { EmptySearch }
+            } else {
+                _uiState.update { Loading }
+                try {
+                    userRepository.searchUsers(friendName).collectLatest { friends ->
+                        if (friends.isNotEmpty()) {
+                            _uiState.update { Data(people = friends.map { it.mapToUI() }) }
+                        } else {
+                            _uiState.update { EmptyResult(friendName) }
+                        }
+                    }
+                } catch (e: Exception) {
+                    _error.emit(e)
+                }
             }
-        } else {
-            launchStoreCall(
-                onLoading = { _uiState.update { Loading } },
-                load = {
-                    val result = searchFriend.defer(friendName)
-                    if (result.isNotEmpty()) {
-                        _uiState.update { Data(people = searchFriend.defer(friendName).map { it.mapToUI() }) }
-                    } else {
-                        _uiState.update { EmptyResult(friendName) }
-                    }},
-                onError = { _error.emit(it) }
-            )
         }
     }
 
-    fun subscribeFriend(friendId: String) = updateFriendSubription(friendId = friendId, subscribe = true)
-    fun unsubscribeFriend(friendId: String) = updateFriendSubription(friendId = friendId, subscribe = false)
+    fun subscribeFriend(friendId: String) = updateFriendSubscription(friendId = friendId, subscribe = true)
+    fun unsubscribeFriend(friendId: String) = updateFriendSubscription(friendId = friendId, subscribe = false)
 
-    private fun updateFriendSubription(friendId: String, subscribe: Boolean) {
+    private fun updateFriendSubscription(friendId: String, subscribe: Boolean) {
         (_uiState.value as? Data)?.let { data ->
-            launchStoreCall(
-                onLoading = {
+            viewModelScope.launch {
+                // 1. set the aimed friend's subscription to UpdatingSubscribe
+                _uiState.update {
+                    Data(people = data.people.map { friend ->
+                        if (friend.id == friendId) {
+                            friend.copy(subscriptionState = UpdatingSubscribe)
+                        } else friend
+                    })
+                }
+                try {
                     _uiState.update {
-                        Data(
-                            people = data.people.map { friend ->
-                                if (friend.id == friendId) {
-                                    friend.copy(subscriptionState = UpdatingSubscribe)
-                                } else friend
-                            }
-                        )
+                        Data(people = data.people.map { friend ->
+                            if (friend.id == friendId) {
+                                if (subscribe) {
+                                    trackingRepository.sendEventClick(TrackingEventClick(TRACKING_SUBSCRIBE_CLICK))
+                                    userRepository.subscribeUser(friend.mapToModel())
+                                } else {
+                                    trackingRepository.sendEventClick(TrackingEventClick(TRACKING_UNSUBSCRIBE_CLICK))
+                                    userRepository.unsubscribeUser(friend.id)
+                                }
+                                friend.copy(subscriptionState = if (subscribe) Subscribed else NotSubscribed)
+                            } else friend
+                        })
                     }
-
-                },
-                load = {
-                    _uiState.update {
-                        Data(
-                            people = data.people.map { friend ->
-                                if (friend.id == friendId) {
-                                    if (subscribe) {
-                                        trackEventClick.defer(TrackingEventClick(TRACKING_SUBSCRIBE_CLICK))
-                                        subscribeFriend.defer(friend.mapToModel()).mapToUI()
-                                    } else {
-                                        trackEventClick.defer(TrackingEventClick(TRACKING_UNSUBSCRIBE_CLICK))
-                                        unsubscribeFriend.defer(friend.id).mapToUI()
-                                    }
-                                } else friend
-                            }
-                        )
-                    }
-                },
-                onError = { _error.emit(it) }
-            )
+                } catch (e: Exception) {
+                    _error.emit(e)
+                }
+            }
         }
     }
 

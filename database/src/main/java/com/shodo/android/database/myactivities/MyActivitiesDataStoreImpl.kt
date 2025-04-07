@@ -9,14 +9,16 @@ import com.shodo.android.domain.repositories.entities.NewActivity
 import com.shodo.android.domain.repositories.entities.NewActivityType
 import com.shodo.android.domain.repositories.entities.UserPokemonCard
 import java.time.LocalDateTime
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class MyActivitiesDataStoreImpl(private val database: PokeManiacDatabase) : MyActivitiesDataStore {
     override suspend fun saveNewActivity(newActivity: NewActivity) {
         database.localMyActivitiesDao().insert(newActivity.mapToBase())
     }
 
-    override suspend fun getAllActivities(): List<NewActivity> {
-        return database.localMyActivitiesDao().getAllActivities()?.map { it.mapToModel() } ?: emptyList()
+    override suspend fun getAllActivities(): Flow<List<NewActivity>> {
+        return database.localMyActivitiesDao().getAllActivities().map { activities -> activities.map { it.mapToModel() } }
     }
 }
 

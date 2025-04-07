@@ -1,14 +1,14 @@
 package com.shodo.android.data.myfriends
 
 import com.shodo.android.domain.repositories.entities.User
+import kotlinx.coroutines.flow.Flow
 
 interface FriendsDataStore {
-    suspend fun getFriendByName(friendName: String): User?
-    suspend fun getFriendById(friendId: String): User?
+    fun getFriendById(friendId: String): Flow<User?>
     suspend fun subscribeFriend(user: User)
-    suspend fun unsubscribeFriend(user: User)
+    suspend fun unsubscribeFriend(userId: String)
 
     suspend fun updateFriend(user: User)
 
-    suspend fun getSubscribedFriends(): List<User>
+    fun getSubscribedFriends(): Flow<List<User>>
 }
