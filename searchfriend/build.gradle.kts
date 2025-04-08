@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.dynamic-feature")
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
@@ -11,8 +11,6 @@ android {
     defaultConfig {
         minSdk = 26
     }
-
-//    baseModuleName = "app"
 
     buildTypes {
         release {

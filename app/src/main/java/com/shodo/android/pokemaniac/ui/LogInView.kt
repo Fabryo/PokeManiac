@@ -46,7 +46,7 @@ fun LogInView(
                 modifier = Modifier
                     .wrapContentSize()
                     .align(CenterHorizontally),
-                painter = painterResource(id = com.shodo.android.pokemaniac.R.drawable.pokemaniac),
+                painter = painterResource(id = R.drawable.pokemaniac),
                 contentDescription = null
             )
             Spacer(modifier = Modifier.weight(1f))

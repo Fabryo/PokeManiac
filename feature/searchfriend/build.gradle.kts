@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.android.dynamic.feature)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
@@ -34,7 +34,6 @@ dependencies {
 
     implementation(project(":domain"))
     implementation(project(":coreui"))
-    implementation(project(":app"))
     implementation(project(":tracking"))
 
     implementation(libs.material)
@@ -42,6 +41,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.foundation)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)

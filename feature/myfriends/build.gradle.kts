@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.android.dynamic.feature)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     kotlin("plugin.serialization")
@@ -34,7 +34,6 @@ android {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":coreui"))
-    implementation(project(":app"))
     implementation(project(":tracking"))
 
     implementation(platform(libs.androidx.compose.bom))

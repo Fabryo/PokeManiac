@@ -165,7 +165,7 @@ fun MyProfileContent(modifier: Modifier = Modifier, profile: MyProfileUI) {
                     .padding(top = PokeManiacTheme.dimens.large)
                     .clip(CircleShape)
                     .size(PokeManiacTheme.dimens.xxxLarge),
-                painter = painterResource(id = com.shodo.android.pokemaniac.R.drawable.pokemaniac),
+                painter = painterResource(id = R.drawable.pokemaniac),
                 contentDescription = profile.name
             )
         }

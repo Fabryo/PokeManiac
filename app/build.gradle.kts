@@ -8,13 +8,6 @@ plugins {
 android {
     namespace = "com.shodo.android.pokemaniac"
     compileSdk = 35
-    dynamicFeatures += setOf(
-        ":feature:myfriends",
-        ":feature:searchfriend",
-        ":feature:dashboard",
-        ":feature:posttransaction",
-        ":feature:myprofile"
-    )
 
     defaultConfig {
         applicationId = "com.shodo.android.pokemaniac"
@@ -53,6 +46,11 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
     implementation(project(":coreui"))
+    implementation(project(":feature:dashboard"))
+    implementation(project(":feature:myfriends"))
+    implementation(project(":feature:myprofile"))
+    implementation(project(":feature:posttransaction"))
+    implementation(project(":feature:searchfriend"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.core.ktx)

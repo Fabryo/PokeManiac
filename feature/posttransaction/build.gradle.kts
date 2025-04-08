@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.android.dynamic.feature)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     kotlin("plugin.serialization")
@@ -35,7 +35,6 @@ android {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":coreui"))
-    implementation(project(":app"))
     implementation(project(":tracking"))
 
     implementation(libs.material)
@@ -45,15 +44,11 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.foundation)
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.kotlinx.serialization.json)
-
-//    implementation(libs.androidx.camera.camera2)
-//    implementation(libs.androidx.camera.lifecycle)
-//    implementation(libs.androidx.camera.view)
-//    implementation(libs.androidx.camera.core)
 
     // Koin
     implementation(libs.koin.android)

@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.android.dynamic.feature)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
@@ -30,7 +30,6 @@ android {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":coreui"))
-    implementation(project(":app"))
     implementation(project(":tracking"))
 
     implementation(libs.material)
@@ -44,6 +43,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.navigation.compose)
 
     // Koin
     implementation(libs.koin.android)

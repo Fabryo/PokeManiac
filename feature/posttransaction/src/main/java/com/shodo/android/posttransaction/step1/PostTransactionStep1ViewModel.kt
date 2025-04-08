@@ -21,9 +21,9 @@ class PostTransactionStep1ViewModel() : ViewModel() {
 
     fun createImageFile(context: Context): File? {
         return try {
-            val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+            val timeStamp = SimpleDateFormat(DATE_FORMAT, Locale.US).format(Date())
             val storageDir = context.filesDir
-            File.createTempFile("PokeManiac_${timeStamp}_", ".jpg", storageDir)
+            File.createTempFile("${FILE_PREFIX}_${timeStamp}", FILE_FORMAT, storageDir)
         } catch (e: Exception) {
             viewModelScope.launch { _error.emit(e) }
             null
@@ -35,7 +35,7 @@ class PostTransactionStep1ViewModel() : ViewModel() {
            file?.let {
                FileProvider.getUriForFile(
                    context,
-                   context.packageName + ".fileprovider",
+                   context.packageName + FILE_PROVIDER_SUFFIX,
                    file
                )
            }
@@ -43,5 +43,12 @@ class PostTransactionStep1ViewModel() : ViewModel() {
            viewModelScope.launch { _error.emit(e) }
            null
        }
+    }
+
+    companion object {
+        private const val FILE_PROVIDER_SUFFIX = ".fileprovider"
+        private const val FILE_PREFIX = "PokeManiac_"
+        private const val DATE_FORMAT = "yyyyMMdd_HHmmss"
+        private const val FILE_FORMAT = ".jpg"
     }
 }
