@@ -48,6 +48,9 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
 
+    // Kotlin Immutable collections for PersistentList
+    implementation(libs.kotlinx.collections.immutable)
+
     // Koin
     implementation(libs.koin.android)
     implementation(libs.koin.core)
@@ -70,4 +73,7 @@ dependencies {
     testImplementation(libs.mockito.core)
     testImplementation(libs.koin.test)
     testImplementation(libs.turbine)
+
+    // Previews
+    debugImplementation(libs.ui.tooling)
 }

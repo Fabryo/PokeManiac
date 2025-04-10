@@ -7,7 +7,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.shodo.android.coreui.theme.PokeManiacTheme
 import com.shodo.android.dashboard.di.dashboardModule
-import com.shodo.android.dashboard.ui.DashboardView
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.context.GlobalContext.loadKoinModules
 
@@ -21,21 +20,21 @@ class DashboardActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PokeManiacTheme {
-                DashboardView(
+                DashboardScreen(
                     viewModel = koinViewModel(),
-                    goToFriends = {
+                    onFriendsPressed = {
                         val intent = Intent().setClassName(packageName, "com.shodo.android.myfriends.MyFriendsActivity")
                         startActivity(intent)
                     },
-                    goToSearchFriends = {
+                    onSearchFriendsPressed = {
                         val intent = Intent().setClassName(packageName, "com.shodo.android.searchfriend.SearchFriendActivity")
                         startActivity(intent)
                     },
-                    goToProfile = {
+                    onProfilePressed = {
                         val intent = Intent().setClassName(packageName, "com.shodo.android.myprofile.MyProfileActivity")
                         startActivity(intent)
                     },
-                    goToPostTransaction = {
+                    onPostTransactionPressed = {
                         val intent = Intent().setClassName(packageName, "com.shodo.android.posttransaction.PostTransactionActivity")
                         startActivity(intent)
                     }

@@ -19,8 +19,8 @@ import com.shodo.android.coreui.theme.PokeManiacTheme
 import com.shodo.android.myfriends.Routes.MyFriendDetail
 import com.shodo.android.myfriends.Routes.MyFriendList
 import com.shodo.android.myfriends.di.myFriendsModule
-import com.shodo.android.myfriends.myfrienddetail.ui.MyFriendDetailView
-import com.shodo.android.myfriends.myfriendlist.ui.MyFriendListView
+import com.shodo.android.myfriends.myfrienddetail.MyFriendDetailScreen
+import com.shodo.android.myfriends.myfriendlist.MyFriendListScreen
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.context.GlobalContext.loadKoinModules
 import kotlinx.serialization.Serializable
@@ -91,13 +91,13 @@ fun MyFriendsNavHost(modifier: Modifier = Modifier, navController: NavHostContro
                 }
             }
         ) {
-            MyFriendListView(
+            MyFriendListScreen(
                 modifier = Modifier,
                 viewModel = koinViewModel(),
-                onFriendClicked = { friend ->
+                onFriendPressed = { friend ->
                     navController.navigate(MyFriendDetail(friend.id, friend.name))
                 },
-                goToSearchFriends = navigateToSearchFriend,
+                onSearchFriendsPressed = navigateToSearchFriend,
                 onBackPressed = onBackPressed
             )
         }
@@ -129,7 +129,7 @@ fun MyFriendsNavHost(modifier: Modifier = Modifier, navController: NavHostContro
             }
         ) { backStackEntry ->
             val myFriendDetail: MyFriendDetail = backStackEntry.toRoute()
-            MyFriendDetailView(
+            MyFriendDetailScreen(
                 friendId = myFriendDetail.id,
                 friendName = myFriendDetail.name,
                 viewModel = koinViewModel(),

@@ -13,6 +13,8 @@ import com.shodo.android.domain.repositories.entities.NewActivity
 import com.shodo.android.domain.repositories.entities.NewActivityType
 import com.shodo.android.domain.repositories.news.NewsFeedRepository
 import java.time.format.DateTimeFormatter
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +25,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 sealed class DashboardUiState {
-    data class Data(val news: List<NewActivityUI>) : DashboardUiState()
+    data class Data(val news: PersistentList<NewActivityUI>) : DashboardUiState()
     data object EmptyResult : DashboardUiState()
     data object Loading : DashboardUiState()
 }
@@ -60,7 +62,7 @@ class DashboardViewModel(
     private suspend fun fetchNewActivities() {
         newsFeedRepository.getNewActivities().collect { result ->
             if (result.isNotEmpty()) {
-                _uiState.update { DashboardUiState.Data(result.map { it.mapToUI() }) }
+                _uiState.update { DashboardUiState.Data(result.map { it.mapToUI() }.toPersistentList()) }
             } else {
                 _uiState.update { EmptyResult }
             }
@@ -68,20 +70,23 @@ class DashboardViewModel(
     }
 }
 
-private fun NewActivity.mapToUI() = NewActivityUI(
-    friendName = userName,
-    friendImageUrl = userImageUrl,
-    date = date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
-    activityType = activityType.mapToUI(),
-    pokemonCard = PokemonCardUI(
-        name = pokemonCard.name,
-        imageSource = when (val source = pokemonCard.imageSource) {
-            is ImageSource.UrlSource -> ImageSourceUI.UrlSource(source.imageUrl)
-            is ImageSource.FileSource -> ImageSourceUI.FileSource(source.fileUri)
-        }
-    ),
-    price = price
-)
+private fun NewActivity.mapToUI(): NewActivityUI {
+    return NewActivityUI(
+        id = userName + pokemonCard.name + date,
+        friendName = userName,
+        friendImageUrl = userImageUrl,
+        date = date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+        activityType = activityType.mapToUI(),
+        pokemonCard = PokemonCardUI(
+            name = pokemonCard.name,
+            imageSource = when (val source = pokemonCard.imageSource) {
+                is ImageSource.UrlSource -> ImageSourceUI.UrlSource(source.imageUrl)
+                is ImageSource.FileSource -> ImageSourceUI.FileSource(source.fileUri)
+            }
+        ),
+        price = price
+    )
+}
 
 private fun NewActivityType.mapToUI() = when (this) {
     NewActivityType.Purchase -> NewActivityTypeUI.Purchase

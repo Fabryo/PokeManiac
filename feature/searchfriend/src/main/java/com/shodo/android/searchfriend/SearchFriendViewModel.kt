@@ -18,6 +18,8 @@ import com.shodo.android.searchfriend.uimodel.SearchFriendUI
 import com.shodo.android.searchfriend.uimodel.SubscriptionState.NotSubscribed
 import com.shodo.android.searchfriend.uimodel.SubscriptionState.Subscribed
 import com.shodo.android.searchfriend.uimodel.SubscriptionState.UpdatingSubscribe
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -29,7 +31,7 @@ import kotlinx.coroutines.launch
 sealed class SearchFriendUiState {
     data object EmptySearch : SearchFriendUiState()
     data object Loading : SearchFriendUiState()
-    data class Data(val people: List<SearchFriendUI>) : SearchFriendUiState()
+    data class Data(val people: PersistentList<SearchFriendUI>) : SearchFriendUiState()
     data class EmptyResult(val query: String) : SearchFriendUiState()
 }
 
@@ -59,7 +61,7 @@ class SearchFriendViewModel(
                 try {
                     userRepository.searchUsers(friendName).collectLatest { friends ->
                         if (friends.isNotEmpty()) {
-                            _uiState.update { Data(people = friends.map { it.mapToUI() }) }
+                            _uiState.update { Data(people = friends.map { it.mapToUI() }.toPersistentList()) }
                         } else {
                             _uiState.update { EmptyResult(friendName) }
                         }
@@ -83,7 +85,7 @@ class SearchFriendViewModel(
                         if (friend.id == friendId) {
                             friend.copy(subscriptionState = UpdatingSubscribe)
                         } else friend
-                    })
+                    }.toPersistentList())
                 }
                 try {
                     _uiState.update {
@@ -98,7 +100,7 @@ class SearchFriendViewModel(
                                 }
                                 friend.copy(subscriptionState = if (subscribe) Subscribed else NotSubscribed)
                             } else friend
-                        })
+                        }.toPersistentList())
                     }
                 } catch (e: Exception) {
                     _error.emit(e)

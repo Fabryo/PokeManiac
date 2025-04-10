@@ -80,11 +80,3 @@ fun Welcome( modifier: Modifier = Modifier) {
         style = PokeManiacTheme.typography.t1
     )
 }
-
-@Preview(showBackground = true)
-@Composable
-fun WelcomePreview() {
-    PokeManiacTheme {
-        Welcome()
-    }
-}

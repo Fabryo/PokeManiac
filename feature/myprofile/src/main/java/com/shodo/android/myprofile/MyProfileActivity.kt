@@ -8,7 +8,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.ui.Modifier
 import com.shodo.android.coreui.theme.PokeManiacTheme
 import com.shodo.android.myprofile.di.myProfileModule
-import com.shodo.android.myprofile.ui.MyProfileView
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.context.GlobalContext.loadKoinModules
 
@@ -22,11 +21,11 @@ class MyProfileActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PokeManiacTheme {
-                MyProfileView(
+                MyProfileScreen(
                     modifier = Modifier,
                     viewModel = koinViewModel(),
                     onBackPressed = onBackPressedDispatcher::onBackPressed,
-                    onPostTransaction = {
+                    onPostTransactionPressed = {
                         val intent = Intent().setClassName(packageName, "com.shodo.android.posttransaction.PostTransactionActivity")
                         startActivity(intent)
                     }

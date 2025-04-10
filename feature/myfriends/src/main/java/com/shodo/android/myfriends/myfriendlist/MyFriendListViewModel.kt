@@ -8,6 +8,8 @@ import com.shodo.android.myfriends.myfriendlist.MyFriendListUiState.Empty
 import com.shodo.android.myfriends.myfriendlist.MyFriendListUiState.Loading
 import com.shodo.android.myfriends.uimodel.MyFriendUI
 import com.shodo.android.myfriends.uimodel.mapToUI
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -17,7 +19,7 @@ import kotlinx.coroutines.launch
 
 sealed class MyFriendListUiState {
     data object Loading: MyFriendListUiState()
-    data class Data(val friends: List<MyFriendUI>): MyFriendListUiState()
+    data class Data(val friends: PersistentList<MyFriendUI>): MyFriendListUiState()
     data object Empty: MyFriendListUiState()
 }
 
@@ -37,7 +39,7 @@ class MyFriendListViewModel(
             try {
                 userRepository.getSubscribedUsers().collect { friends ->
                     if (friends.isNotEmpty()) {
-                        _uiState.update { Data(friends = friends.map { it.mapToUI() }) }
+                        _uiState.update { Data(friends = friends.map { it.mapToUI() }.toPersistentList()) }
                     } else {
                         _uiState.update { Empty }
                     }

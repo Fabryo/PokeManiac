@@ -41,7 +41,7 @@ fun SecondaryButton(
 @Preview
 @Composable
 fun SecondaryButtonPreview() {
-    PokeManiacTheme {
+    PokeManiacTheme(darkTheme = false) {
         SecondaryButton(text = "buttonText", onClick = {})
     }
 }

@@ -46,6 +46,9 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    // Kotlin Immutable collections for PersistentList
+    implementation(libs.kotlinx.collections.immutable)
+
     implementation(libs.kotlinx.serialization.json)
 
     // Koin
@@ -60,4 +63,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Previews
+    debugImplementation(libs.ui.tooling)
 }

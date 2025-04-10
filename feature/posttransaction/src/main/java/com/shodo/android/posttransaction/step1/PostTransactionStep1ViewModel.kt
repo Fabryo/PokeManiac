@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-
 class PostTransactionStep1ViewModel() : ViewModel() {
 
     private val _error = MutableSharedFlow<Exception>()

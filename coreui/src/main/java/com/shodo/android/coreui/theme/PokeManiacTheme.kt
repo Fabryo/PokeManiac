@@ -48,7 +48,6 @@ private val localAmbientPokemaniacColors = staticCompositionLocalOf<PokeManiacCo
     error("No PokemaniacColorPalette provided")
 }
 
-
 object PokeManiacTheme {
 
     val colors: PokeManiacColors

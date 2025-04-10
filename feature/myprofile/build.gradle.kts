@@ -48,6 +48,9 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.navigation.compose)
 
+    // Kotlin Immutable collections for PersistentList
+    implementation(libs.kotlinx.collections.immutable)
+
     // Koin
     implementation(libs.koin.android)
     implementation(libs.koin.core)
@@ -60,4 +63,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Previews
+    debugImplementation(libs.androidx.ui.tooling.preview)
 }

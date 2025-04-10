@@ -3,16 +3,19 @@ package com.shodo.android.myfriends.uimodel
 import com.shodo.android.domain.repositories.entities.ImageSource
 import com.shodo.android.domain.repositories.entities.User
 import com.shodo.android.domain.repositories.entities.UserPokemonCard
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.toPersistentList
 
 data class MyFriendUI(
     val id: String,
     val name: String,
     val imageUrl: String,
     val description: String,
-    val pokemonCards: List<MyFriendPokemonCardUI>
+    val pokemonCards: PersistentList<MyFriendPokemonCardUI>
 )
 
 data class MyFriendPokemonCardUI(
+    val id: String,
     val pokemonId: Int,
     val totalVotes: Int,
     val hasMyVote: Boolean,
@@ -25,10 +28,11 @@ fun User.mapToUI() = MyFriendUI(
     name = name,
     imageUrl = imageUrl,
     description = description,
-    pokemonCards = pokemonCards.map { it.mapToUI() }
+    pokemonCards = pokemonCards.map { it.mapToUI() }.toPersistentList()
 )
 
 private fun UserPokemonCard.mapToUI() = MyFriendPokemonCardUI(
+    id = name + (imageSource as ImageSource.UrlSource).imageUrl,
     pokemonId = pokemonId,
     totalVotes = totalVotes,
     hasMyVote = hasMyVote,

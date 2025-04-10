@@ -19,8 +19,8 @@ import com.shodo.android.coreui.theme.PokeManiacTheme
 import com.shodo.android.posttransaction.Routes.Step1
 import com.shodo.android.posttransaction.Routes.Step2
 import com.shodo.android.posttransaction.di.postTransactionModule
-import com.shodo.android.posttransaction.step1.ui.PostTransactionStep1View
-import com.shodo.android.posttransaction.step2.ui.PostTransactionStep2View
+import com.shodo.android.posttransaction.step1.PostTransactionStep1Screen
+import com.shodo.android.posttransaction.step2.PostTransactionStep2Screen
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.context.GlobalContext.loadKoinModules
 import kotlinx.serialization.Serializable
@@ -89,7 +89,7 @@ fun PostTransactionNavHost(modifier: Modifier = Modifier, navController: NavHost
                 }
             }
         ) {
-            PostTransactionStep1View(
+            PostTransactionStep1Screen(
                 viewModel = koinViewModel(),
                 onNextStep = { imageUri ->
                     navController.navigate(Step2(imageUri.toString()))
@@ -125,7 +125,7 @@ fun PostTransactionNavHost(modifier: Modifier = Modifier, navController: NavHost
             }
         ) { backStackEntry ->
             val step2Arg: Step2 = backStackEntry.toRoute()
-            PostTransactionStep2View(
+            PostTransactionStep2Screen(
                 viewModel = koinViewModel(),
                 imageUri = step2Arg.uri.toUri(),
                 onBackPressed = onBackPressed,

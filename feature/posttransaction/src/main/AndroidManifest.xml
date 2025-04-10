@@ -1,18 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:dist="http://schemas.android.com/apk/distribution">
-
-<!--    <uses-feature android:name="android.hardware.camera" android:required="true" />-->
-<!--    <uses-permission android:name="android.permission.CAMERA" />-->
-
-    <dist:module
-        dist:instant="false"
-        dist:title="@string/title_myprofile">
-        <dist:delivery>
-            <dist:on-demand />
-        </dist:delivery>
-        <dist:fusing dist:include="true" />
-    </dist:module>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
         <activity

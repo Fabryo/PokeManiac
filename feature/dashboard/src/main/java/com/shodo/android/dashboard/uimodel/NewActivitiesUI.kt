@@ -4,6 +4,7 @@ import android.net.Uri
 
 
 data class NewActivityUI(
+    val id: String,
     val friendName: String,
     val friendImageUrl: String?,
     val date: String,
