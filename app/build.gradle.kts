@@ -57,6 +57,7 @@ dependencies {
     // Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.activity.compose)
 
     // Koin - Dependency injection
     implementation(libs.koin.androidx.compose)

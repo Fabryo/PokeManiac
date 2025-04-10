@@ -16,7 +16,7 @@ val databaseModule = module {
 
     fun provideDataBase(application: Application): PokeManiacDatabase {
         return Room.databaseBuilder(application, PokeManiacDatabase::class.java, "PokeManiacDB")
-            .fallbackToDestructiveMigration()
+            .fallbackToDestructiveMigration(false)
             .allowMainThreadQueries()
             .build()
     }
