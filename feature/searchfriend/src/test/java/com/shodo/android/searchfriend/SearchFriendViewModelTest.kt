@@ -29,21 +29,6 @@ class SearchFriendViewModelTest {
 
     private lateinit var dispatcher: TestDispatcher
 
-//    @Mock
-//    private lateinit var searchFriend: SearchFriendUseCase
-//
-//    @Mock
-//    private lateinit var subscribeFriend: SubscribeFriendUseCase
-//
-//    @Mock
-//    private lateinit var unsubscribeFriend: UnsubscribeFriendUseCase
-//
-//    @Mock
-//    private lateinit var trackEventScreen: SendTrackingEventScreenUseCase
-//
-//    @Mock
-//    private lateinit var trackEventClick: SendTrackingEventClickUseCase
-
     @Mock
     private lateinit var userRepository: UserRepository
 

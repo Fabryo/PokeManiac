@@ -31,23 +31,17 @@ android {
 }
 
 dependencies {
-
     implementation(project(":domain"))
     implementation(project(":data"))
 
-    // Koin
+    // Koin - Dependency injection
     implementation(libs.koin.android)
     implementation(libs.koin.core)
 
-    // Room components
+    // Room - Database
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
-    implementation(libs.gson)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    // Gson - Room Type Converters
+    implementation(libs.gson)
 }

@@ -36,34 +36,24 @@ dependencies {
     implementation(project(":coreui"))
     implementation(project(":tracking"))
 
+    // Compose
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.material3)
+
+    // Compose Navigation
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-
-    // Kotlin Immutable collections for PersistentList
-    implementation(libs.kotlinx.collections.immutable)
-
     implementation(libs.kotlinx.serialization.json)
 
-    // Koin
-    implementation(libs.koin.android)
-    implementation(libs.koin.core)
+    // Kotlin Immutable collections - PersistentList
+    implementation(libs.kotlinx.collections.immutable)
+
+    // Koin - Dependency injection
     implementation(libs.koin.androidx.compose)
 
-    // Coil
-    implementation(libs.coil.network)
+    // Coil - Remote Image Compose
     implementation(libs.coil.compose)
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.coil.network)
 
     // Previews
-    debugImplementation(libs.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 }

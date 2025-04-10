@@ -30,21 +30,16 @@ android {
 }
 
 dependencies {
-
     implementation(project(":domain"))
 
-    // Koin
+    // Coroutines Core - Flow
+    implementation(libs.kotlinx.coroutines.core)
+
+    // Koin - Dependency injection
     implementation(libs.koin.core)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    testImplementation(libs.kotlinx.coroutines.test.v150)
-    testImplementation(libs.androidx.core.testing)
-    testImplementation(libs.mockito.kotlin)
+    // Tests
+    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockito.core)
-    testImplementation(libs.koin.test)
+    testImplementation(libs.kotlin.test)
 }

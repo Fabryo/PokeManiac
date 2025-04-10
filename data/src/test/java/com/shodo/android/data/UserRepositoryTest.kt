@@ -28,16 +28,10 @@ class UserRepositoryTest {
 
     @Mock
     private lateinit var friendsRequest: FriendsRequest
-//    = FriendsRequest {
-//        onBlocking { searchUsers("friendName") }.doReturn(flow { emit(listOf(defaultUserSubscribed, defaultUser2NotSubscribed)) } )
-//    }
+
     @Mock
     private lateinit var friendsDataStore: FriendsDataStore
-//    = mock<FriendsDataStore> {
-//        onBlocking { getFriendById("friendId") }.doReturn(flow { emit(defaultUserSubscribed) })
-//        onBlocking { updateFriend(defaultUserSubscribed) }.doReturn(Unit)
-//        onBlocking { getSubscribedFriends() }.doReturn(flow { emit(listOf(defaultUserSubscribed)) })
-//    }
+
     private lateinit var userRepository: UserRepositoryImpl
 
     @Before
