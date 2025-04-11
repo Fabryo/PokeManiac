@@ -9,6 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle.Event.ON_START
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -26,21 +27,13 @@ import kotlinx.coroutines.flow.collectLatest
  * @param modifier Modifier to be applied to the composable.
  * @param viewModel The ViewModel providing the UI state and handling actions.
  * @param lifecycleOwner The LifecycleOwner used to observe lifecycle events.
- * @param onFriendsPressed Callback for navigating to the Friends screen.
- * @param onProfilePressed Callback for navigating to the Profile screen.
- * @param onSearchFriendsPressed Callback for navigating to the Search Friends screen.
- * @param onPostTransactionPressed Callback for navigating to the Post Transaction screen.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
     modifier: Modifier = Modifier,
     viewModel: DashboardViewModel,
-    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-    onFriendsPressed: () -> Unit,
-    onProfilePressed: () -> Unit,
-    onSearchFriendsPressed: () -> Unit,
-    onPostTransactionPressed: () -> Unit
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     LaunchedEffect(Unit) {
@@ -63,14 +56,16 @@ fun DashboardScreen(
         }
     }
 
+    val context = LocalContext.current
+
     DashboardView(
         modifier = modifier,
         uiState = uiState,
         onRefresh = viewModel::refreshNewsFeed,
-        onFriendsPressed = onFriendsPressed,
-        onProfilePressed = onProfilePressed,
-        onSearchFriendsPressed = onSearchFriendsPressed,
-        onPostTransactionPressed = onPostTransactionPressed,
+        onFriendsPressed = { viewModel.navigateToMyFriends(context) },
+        onProfilePressed = { viewModel.navigateToMyProfile(context) },
+        onSearchFriendsPressed = { viewModel.navigateToSearchFriends(context) },
+        onPostTransactionPressed = { viewModel.navigateToPostTransaction(context) },
         snackbarHostState = snackbarHostState
     )
 }

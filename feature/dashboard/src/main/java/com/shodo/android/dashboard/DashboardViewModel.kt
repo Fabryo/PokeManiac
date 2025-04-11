@@ -1,7 +1,12 @@
 package com.shodo.android.dashboard
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shodo.android.coreui.navigator.MyFriendsNavigator
+import com.shodo.android.coreui.navigator.MyProfileNavigator
+import com.shodo.android.coreui.navigator.PostTransactionNavigator
+import com.shodo.android.coreui.navigator.SearchFriendNavigator
 import com.shodo.android.dashboard.DashboardUiState.EmptyResult
 import com.shodo.android.dashboard.DashboardUiState.Loading
 import com.shodo.android.dashboard.uimodel.ImageSourceUI
@@ -31,7 +36,11 @@ sealed class DashboardUiState {
 }
 
 class DashboardViewModel(
-    private val newsFeedRepository: NewsFeedRepository
+    private val newsFeedRepository: NewsFeedRepository,
+    private val searchFriendNavigator: SearchFriendNavigator,
+    private val myFriendsNavigator: MyFriendsNavigator,
+    private val myProfileNavigator: MyProfileNavigator,
+    private val postTransactionNavigator: PostTransactionNavigator
 ) : ViewModel() {
 
     private val _error = MutableSharedFlow<Exception>()
@@ -57,6 +66,19 @@ class DashboardViewModel(
                 _error.emit(e)
             }
         }
+    }
+
+    fun navigateToSearchFriends(context: Context) {
+        searchFriendNavigator.navigate(context)
+    }
+    fun navigateToMyFriends(context: Context) {
+        myFriendsNavigator.navigate(context)
+    }
+    fun navigateToMyProfile(context: Context) {
+        myProfileNavigator.navigate(context)
+    }
+    fun navigateToPostTransaction(context: Context) {
+        postTransactionNavigator.navigate(context)
     }
 
     private suspend fun fetchNewActivities() {

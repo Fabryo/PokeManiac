@@ -9,6 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -26,7 +27,6 @@ import kotlinx.coroutines.flow.collectLatest
  * @param modifier            Modifier to apply to the root of the screen.
  * @param viewModel           The ViewModel handling the logic and state for My Profile.
  * @param lifecycleOwner      The lifecycle owner to observe for automatic data refresh (default: current).
- * @param onPostTransactionPressed   Callback for navigating to the Post Transaction screen.
  * @param onBackPressed       Callback triggered when the back button is pressed.
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,9 +35,9 @@ fun MyProfileScreen(
     modifier: Modifier = Modifier,
     viewModel: MyProfileViewModel,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-    onBackPressed: () -> Unit,
-    onPostTransactionPressed: () -> Unit
+    onBackPressed: () -> Unit
 ) {
+    val context = LocalContext.current
 
     val snackbarHostState = remember { SnackbarHostState() }
     LaunchedEffect(Unit) {
@@ -64,7 +64,7 @@ fun MyProfileScreen(
         modifier = modifier,
         uiState = uiState,
         onBackPressed = onBackPressed,
-        onPostTransactionPressed = onPostTransactionPressed,
+        onPostTransactionPressed = { viewModel.navigateToPostTransaction(context) },
         snackbarHostState = snackbarHostState
     )
 }

@@ -12,25 +12,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.shodo.android.coreui.navigation.enterTransition
-import com.shodo.android.coreui.navigation.exitTransition
-import com.shodo.android.coreui.navigation.popEnterTransition
-import com.shodo.android.coreui.navigation.popExitTransition
+import com.shodo.android.coreui.navigationtransitions.enterTransition
+import com.shodo.android.coreui.navigationtransitions.exitTransition
+import com.shodo.android.coreui.navigationtransitions.popEnterTransition
+import com.shodo.android.coreui.navigationtransitions.popExitTransition
 import com.shodo.android.coreui.theme.PokeManiacTheme
 import com.shodo.android.posttransaction.Routes.Step1
 import com.shodo.android.posttransaction.Routes.Step2
-import com.shodo.android.posttransaction.di.postTransactionModule
 import com.shodo.android.posttransaction.step1.PostTransactionStep1Screen
 import com.shodo.android.posttransaction.step2.PostTransactionStep2Screen
 import org.koin.androidx.compose.koinViewModel
-import org.koin.core.context.GlobalContext.loadKoinModules
 import kotlinx.serialization.Serializable
 
 class PostTransactionActivity : ComponentActivity() {
-    init {
-        loadKoinModules(postTransactionModule)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

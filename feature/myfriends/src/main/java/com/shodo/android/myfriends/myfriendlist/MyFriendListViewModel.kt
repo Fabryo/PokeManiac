@@ -1,7 +1,9 @@
 package com.shodo.android.myfriends.myfriendlist
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shodo.android.coreui.navigator.SearchFriendNavigator
 import com.shodo.android.domain.repositories.friends.UserRepository
 import com.shodo.android.myfriends.myfriendlist.MyFriendListUiState.Data
 import com.shodo.android.myfriends.myfriendlist.MyFriendListUiState.Empty
@@ -24,7 +26,8 @@ sealed class MyFriendListUiState {
 }
 
 class MyFriendListViewModel(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val searchFriendNavigator: SearchFriendNavigator
 ): ViewModel() {
 
     private val _uiState: MutableStateFlow<MyFriendListUiState> = MutableStateFlow(Loading)
@@ -58,5 +61,9 @@ class MyFriendListViewModel(
                 _error.emit(e)
             }
         }
+    }
+
+    fun navigateToSearchFriend(context: Context) {
+        searchFriendNavigator.navigate(context)
     }
 }

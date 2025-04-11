@@ -9,6 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle.Event.ON_START
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -28,7 +29,6 @@ import kotlinx.coroutines.flow.collectLatest
  * @param viewModel           The ViewModel handling the logic and state for the friend list.
  * @param lifecycleOwner      The lifecycle owner to observe for automatic data refresh (default: current).
  * @param onFriendPressed     Callback triggered when a friend item is clicked.
- * @param onSearchFriendsPressed   Callback to navigate to the friend search screen.
  * @param onBackPressed       Callback triggered when the back button is pressed.
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,9 +38,9 @@ fun MyFriendListScreen(
     viewModel: MyFriendListViewModel,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     onFriendPressed: (MyFriendUI) -> Unit,
-    onSearchFriendsPressed: () -> Unit,
     onBackPressed: () -> Unit
 ) {
+    val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
     LaunchedEffect(Unit) {
         viewModel.error.collectLatest { error ->
@@ -66,7 +66,7 @@ fun MyFriendListScreen(
         modifier = modifier,
         uiState = uiState,
         onFriendPressed = onFriendPressed,
-        onSearchFriendsPressed = onSearchFriendsPressed,
+        onSearchFriendsPressed = { viewModel.navigateToSearchFriend(context) },
         onUnsubscribePressed = viewModel::unsubscribeFriend,
         onBackPressed = onBackPressed,
         snackbarHostState = snackbarHostState

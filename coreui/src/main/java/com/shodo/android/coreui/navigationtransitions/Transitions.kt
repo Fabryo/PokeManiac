@@ -1,4 +1,4 @@
-package com.shodo.android.coreui.navigation
+package com.shodo.android.coreui.navigationtransitions
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.Left
