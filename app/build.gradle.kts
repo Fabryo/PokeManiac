@@ -39,13 +39,19 @@ android {
 }
 
 dependencies {
-    implementation(project(":dependencyinjection"))
-
+    // Core UI Module
     implementation(project(":coreui"))
 
+    // Third Party Modules (for now only Tracking)
     implementation(project(":tracking"))
+
+    // Clean Archi Module
     implementation(project(":domain"))
 
+    // Dependency Injection - For clean archi modules
+    implementation(project(":dependencyinjection"))
+
+    // Features Modules
     implementation(project(":feature:dashboard"))
     implementation(project(":feature:myfriends"))
     implementation(project(":feature:myprofile"))
