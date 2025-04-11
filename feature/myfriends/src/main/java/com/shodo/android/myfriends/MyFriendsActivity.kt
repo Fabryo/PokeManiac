@@ -5,9 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.Left
-import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.Right
-import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -15,6 +12,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.shodo.android.coreui.navigation.enterTransition
+import com.shodo.android.coreui.navigation.exitTransition
+import com.shodo.android.coreui.navigation.popEnterTransition
+import com.shodo.android.coreui.navigation.popExitTransition
 import com.shodo.android.coreui.theme.PokeManiacTheme
 import com.shodo.android.myfriends.Routes.MyFriendDetail
 import com.shodo.android.myfriends.Routes.MyFriendList
@@ -66,67 +67,25 @@ fun MyFriendsNavHost(modifier: Modifier = Modifier, navController: NavHostContro
         startDestination = MyFriendList
     ) {
         composable<MyFriendList>(
-            enterTransition = {
-                when (initialState.destination.route) {
-                    MyFriendDetail::class.java.canonicalName -> slideIntoContainer(Left, animationSpec = tween(200))
-                    else -> null
-                }
-            },
-            exitTransition = {
-                when (targetState.destination.route) {
-                    MyFriendDetail::class.java.canonicalName -> slideOutOfContainer(Left, animationSpec = tween(200))
-                    else -> null
-                }
-            },
-            popEnterTransition = {
-                when (initialState.destination.route) {
-                    MyFriendDetail::class.java.canonicalName -> slideIntoContainer(Right, animationSpec = tween(200))
-                    else -> null
-                }
-            },
-            popExitTransition = {
-                when (targetState.destination.route) {
-                    MyFriendDetail::class.java.canonicalName -> slideOutOfContainer(Right, animationSpec = tween(200))
-                    else -> null
-                }
-            }
+            enterTransition = enterTransition(MyFriendDetail::class.java.canonicalName),
+            exitTransition = exitTransition(MyFriendDetail::class.java.canonicalName),
+            popEnterTransition = popEnterTransition(MyFriendDetail::class.java.canonicalName),
+            popExitTransition = popExitTransition(MyFriendDetail::class.java.canonicalName)
         ) {
             MyFriendListScreen(
                 modifier = Modifier,
                 viewModel = koinViewModel(),
-                onFriendPressed = { friend ->
-                    navController.navigate(MyFriendDetail(friend.id, friend.name))
-                },
+                onFriendPressed = { friend -> navController.navigate(MyFriendDetail(friend.id, friend.name)) },
                 onSearchFriendsPressed = navigateToSearchFriend,
                 onBackPressed = onBackPressed
             )
         }
 
         composable<MyFriendDetail>(
-            enterTransition = {
-                when (initialState.destination.route) {
-                    MyFriendList::class.java.canonicalName -> slideIntoContainer(Left, animationSpec = tween(200))
-                    else -> null
-                }
-            },
-            exitTransition = {
-                when (targetState.destination.route) {
-                    MyFriendList::class.java.canonicalName -> slideOutOfContainer(Left, animationSpec = tween(200))
-                    else -> null
-                }
-            },
-            popEnterTransition = {
-                when (initialState.destination.route) {
-                    MyFriendList::class.java.canonicalName -> slideIntoContainer(Right, animationSpec = tween(200))
-                    else -> null
-                }
-            },
-            popExitTransition = {
-                when (targetState.destination.route) {
-                    MyFriendList::class.java.canonicalName -> slideOutOfContainer(Right, animationSpec = tween(200))
-                    else -> null
-                }
-            }
+            enterTransition = enterTransition(MyFriendList::class.java.canonicalName),
+            exitTransition = exitTransition(MyFriendList::class.java.canonicalName),
+            popEnterTransition = popEnterTransition(MyFriendList::class.java.canonicalName),
+            popExitTransition = popExitTransition(MyFriendList::class.java.canonicalName)
         ) { backStackEntry ->
             val myFriendDetail: MyFriendDetail = backStackEntry.toRoute()
             MyFriendDetailScreen(

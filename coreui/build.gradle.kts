@@ -38,6 +38,10 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.material3)
 
+    // Compose Navigation
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
+
     // Koin - Dependency injection
     implementation(libs.koin.core)
     implementation(libs.koin.androidx.compose)

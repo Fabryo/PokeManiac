@@ -4,9 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.Left
-import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.Right
-import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.core.net.toUri
@@ -15,6 +12,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.shodo.android.coreui.navigation.enterTransition
+import com.shodo.android.coreui.navigation.exitTransition
+import com.shodo.android.coreui.navigation.popEnterTransition
+import com.shodo.android.coreui.navigation.popExitTransition
 import com.shodo.android.coreui.theme.PokeManiacTheme
 import com.shodo.android.posttransaction.Routes.Step1
 import com.shodo.android.posttransaction.Routes.Step2
@@ -55,7 +56,6 @@ sealed class Routes {
     data class Step2(val uri: String): Routes()
 }
 
-
 @Composable
 fun PostTransactionNavHost(modifier: Modifier = Modifier, navController: NavHostController, onBackPressed: () -> Unit, onActivitySaved: () -> Unit) {
     NavHost(
@@ -64,65 +64,23 @@ fun PostTransactionNavHost(modifier: Modifier = Modifier, navController: NavHost
         startDestination = Step1
     ) {
         composable<Step1>(
-            enterTransition = {
-                when (initialState.destination.route) {
-                    Step2::class.java.canonicalName -> slideIntoContainer(Left, animationSpec = tween(200))
-                    else -> null
-                }
-            },
-            exitTransition = {
-                when (targetState.destination.route) {
-                    Step2::class.java.canonicalName -> slideOutOfContainer(Left, animationSpec = tween(200))
-                    else -> null
-                }
-            },
-            popEnterTransition = {
-                when (initialState.destination.route) {
-                    Step2::class.java.canonicalName -> slideIntoContainer(Right, animationSpec = tween(200))
-                    else -> null
-                }
-            },
-            popExitTransition = {
-                when (targetState.destination.route) {
-                    Step2::class.java.canonicalName -> slideOutOfContainer(Right, animationSpec = tween(200))
-                    else -> null
-                }
-            }
+            enterTransition = enterTransition(Step2::class.java.canonicalName),
+            exitTransition = exitTransition(Step2::class.java.canonicalName),
+            popEnterTransition = popEnterTransition(Step2::class.java.canonicalName),
+            popExitTransition = popExitTransition(Step2::class.java.canonicalName)
         ) {
             PostTransactionStep1Screen(
                 viewModel = koinViewModel(),
-                onNextStep = { imageUri ->
-                    navController.navigate(Step2(imageUri.toString()))
-                },
+                onNextStep = { imageUri -> navController.navigate(Step2(imageUri.toString())) },
                 onBackPressed = onBackPressed
             )
         }
 
         composable<Step2>(
-            enterTransition = {
-                when (initialState.destination.route) {
-                    Step1::class.java.canonicalName -> slideIntoContainer(Left, animationSpec = tween(200))
-                    else -> null
-                }
-            },
-            exitTransition = {
-                when (targetState.destination.route) {
-                    Step1::class.java.canonicalName -> slideOutOfContainer(Left, animationSpec = tween(200))
-                    else -> null
-                }
-            },
-            popEnterTransition = {
-                when (initialState.destination.route) {
-                    Step1::class.java.canonicalName -> slideIntoContainer(Right, animationSpec = tween(200))
-                    else -> null
-                }
-            },
-            popExitTransition = {
-                when (targetState.destination.route) {
-                    Step1::class.java.canonicalName -> slideOutOfContainer(Right, animationSpec = tween(200))
-                    else -> null
-                }
-            }
+            enterTransition = enterTransition(Step1::class.java.canonicalName),
+            exitTransition = exitTransition(Step1::class.java.canonicalName),
+            popEnterTransition = popEnterTransition(Step1::class.java.canonicalName),
+            popExitTransition = popExitTransition(Step1::class.java.canonicalName)
         ) { backStackEntry ->
             val step2Arg: Step2 = backStackEntry.toRoute()
             PostTransactionStep2Screen(
