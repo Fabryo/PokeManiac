@@ -39,12 +39,13 @@ android {
 }
 
 dependencies {
-    implementation(project(":tracking"))
-    implementation(project(":database"))
-    implementation(project(":api"))
-    implementation(project(":data"))
-    implementation(project(":domain"))
+    implementation(project(":dependencyinjection"))
+
     implementation(project(":coreui"))
+
+    implementation(project(":tracking"))
+    implementation(project(":domain"))
+
     implementation(project(":feature:dashboard"))
     implementation(project(":feature:myfriends"))
     implementation(project(":feature:myprofile"))
