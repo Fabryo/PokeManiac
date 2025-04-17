@@ -26,6 +26,7 @@ The whole Concept & Business Plan are available [here](https://github.com/Fabryo
  * Libraries: Retrofit, Room, Coil, Coroutines, Flow, Koin, etc.
 
 The Architecture in detail is available [here](https://github.com/Fabryo/PokeManiac/wiki/Architecture-&-Tech-choices#architecture).
+
 More information about the Tech stack is available [here](https://github.com/Fabryo/PokeManiac/wiki/Architecture-&-Tech-choices#tech-choices).
 
 ### Business Features Implemented
