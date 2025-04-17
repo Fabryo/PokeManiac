@@ -12,14 +12,73 @@ The whole documentation is available in [the Github's Wiki](https://github.com/F
 
 Instructions for installing and launching the app locally are available [here](https://github.com/Fabryo/PokeManiac/wiki/Setup).
 
-### Concept & Business Plan
- * A social network dedicated to Pokémon card collectors
- * Key features: card library, friend interactions, transaction sharing, and a future marketplace
- * Monetization options: subscriptions, ads, transaction fees
-
-The whole Concept & Business Plan are available [here](https://github.com/Fabryo/PokeManiac/wiki/Concept-and-Business-Plan).
-
 ### Architecture & Tech Stack
+
+```mermaid
+flowchart LR
+  %% Layers with custom red colors
+  subgraph Presentation_Layer
+        direction TB
+        App["App (Splash, SignIn/SignUp)"]
+        Dashboard["Dashboard"]
+        SearchFriends["SearchFriends"]
+        MyFriends["MyFriends"]
+        MyProfile["MyProfile"]
+        NewPost["NewPost"]
+        CoreUI["CoreUI (Shared Views & Utils)"]
+    end
+
+    subgraph Domain_Layer
+        direction TB
+        Domain["Domain (Repository Interfaces + Entities)"]
+    end
+
+    subgraph Data_Layer
+        direction TB
+        Data["Data (Repository Implementations)"]
+        Api["API (Retrofit Services)"]
+        Database["Database (Room Persistence)"]
+    end
+
+    subgraph Tracking_Layer
+        direction TB
+        Tracking["Tracking (Analytics & User Tracking)"]
+    end
+
+    App --> Dashboard
+    App --> SearchFriends
+    App --> MyFriends
+    App --> MyProfile
+    App --> NewPost
+
+    Dashboard --> CoreUI
+    SearchFriends --> CoreUI
+    MyFriends --> CoreUI
+    MyProfile --> CoreUI
+    NewPost --> CoreUI
+
+    App --> Domain
+    Dashboard --> Domain
+    SearchFriends --> Domain
+    MyFriends --> Domain
+    MyProfile --> Domain
+    NewPost --> Domain
+
+    Domain --> Data
+    Data --> Api
+    Data --> Database
+
+    App --> Tracking
+
+    %% Style for better visibility
+    style Presentation_Layer fill:#FFCCCC,stroke:#800000,stroke-width:2px
+    style Domain_Layer fill:#FFCCCC,stroke:#800000,stroke-width:2px
+    style Data_Layer fill:#FFCCCC,stroke:#800000,stroke-width:2px
+    style Tracking_Layer fill:#FFCCCC,stroke:#800000,stroke-width:2px
+    linkStyle default stroke:#800000,stroke-width:2px
+
+---
+
  * Modular architecture following Clean Architecture principles
  * Fully built with Jetpack Compose
  * Key patterns: MVVM, StateFlow, DI with Koin, etc.
@@ -28,6 +87,13 @@ The whole Concept & Business Plan are available [here](https://github.com/Fabryo
 The Architecture in detail is available [here](https://github.com/Fabryo/PokeManiac/wiki/Architecture-&-Tech-choices#architecture).
 
 More information about the Tech stack is available [here](https://github.com/Fabryo/PokeManiac/wiki/Architecture-&-Tech-choices#tech-choices).
+
+### Concept & Business Plan
+ * A social network dedicated to Pokémon card collectors
+ * Key features: card library, friend interactions, transaction sharing, and a future marketplace
+ * Monetization options: subscriptions, ads, transaction fees
+
+The whole Concept & Business Plan are available [here](https://github.com/Fabryo/PokeManiac/wiki/Concept-and-Business-Plan).
 
 ### Business Features Implemented
  * NewsFeed with friend transactions
@@ -46,8 +112,6 @@ More information, screens and videos about the implemented Business Features are
  * Jetpack Compose Previews for UI testing
 
 More information about the implemented Tech Features are available [here](https://github.com/Fabryo/PokeManiac/wiki/Tech-Features#implemented-tech-features-).
-
-
 
 ### Technical Features To Be Added
  * Crash reporting & code quality tools: Crashlytics, Sonar, Lint…
