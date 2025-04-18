@@ -73,11 +73,8 @@ flowchart TD
     Presentation_Layer --> Tracking_Layer
     Tracking_Layer --> Domain_Layer
 
-    Domain_Layer --> Data_Layer
-    Api --> Data
-    Api --> Domain_Layer
+    Data_Layer --> Domain_Layer
     Database --> Data
-    Database --> Domain_Layer
 
     %% Apply dark mode style
     linkStyle default stroke:#FFFFFF,stroke-width:1.5px
