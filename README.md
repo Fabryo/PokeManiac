@@ -190,5 +190,6 @@ More information about the backlogged Tech Features are available [here](https:/
  * Marketplace with secure transactions
  * Tablet layout & responsive design
  * AI card recognition and valuation
+
 More information about the backlogged Business Features are available [here](https://github.com/Fabryo/PokeManiac/wiki/Remaining-Features-to-implement)
   
